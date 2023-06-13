@@ -1,20 +1,36 @@
 {
-  "name": "chat",
+  "name": "chatbot-dev-pra-dev",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx nodemon src/server.ts --watch 'src/' -e ts",
+    "compile": "npx tsc",
+    "start": "node ./dist/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "axios": "^1.4.0",
-    "body-parser": "^1.20.2",
+  "devDependencies": {
+    "@types/bayes-classifier": "^0.0.0",
+    "@types/cors": "^2.8.13",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.17",
+    "@types/helmet": "^4.0.0",
+    "@types/morgan": "^1.9.4",
     "csv-parser": "^3.0.0",
-    "express": "^4.18.2",
     "natural": "^6.5.0",
-    "sentiment": "^5.0.2"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "bayes-classifier": "^0.0.5",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0"
   }
 }
