@@ -47,6 +47,11 @@ function populaClassification() {
     classificationMap.set('reserva', 'Para fazer uma reserva, por favor, entre em contato com nossa equipe de atendimento.');
     classificationMap.set('contato', 'Você pode entrar em contato conosco pelo telefone (XX) XXXX-XXXX ou pelo email contato@exemplo.com.');
     classificationMap.set('orçamento', 'Para solicitar um orçamento, por favor, envie um email para orcamento@exemplo.com com os detalhes do seu projeto.');
+    classificationMap.set('burnout',
+        'Síndrome de Burnout ou Síndrome do Esgotamento Profissional é um disturbio emocional com sintomas de exaustão extrema, ' +
+        'estresse e esgotamento físico resultante de situações de trabalho desgastante, que demandam muita competitividade ' +
+        'ou responsabilidade. A principal causa da doença é justamente o excesso de trabalho.'
+    );
 }
 
 export default {
