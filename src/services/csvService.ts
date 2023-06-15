@@ -1,10 +1,8 @@
 import fs from "fs";
 import csv from "csv-parser";
-import natural from "natural";
+import {BayesClassifier} from "natural";
 
-const classifier = new natural.BayesClassifier();
-
-function addTrainingDataFromCSV() {
+function addTrainingDataFromCSV(classifier: BayesClassifier) {
     fs.createReadStream('./training_data.csv')
         .pipe(csv())
         .on('data', (data: any) => {

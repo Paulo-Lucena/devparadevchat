@@ -1,15 +1,7 @@
-document.getElementById('chat-form')
-    .addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const message = document.getElementById('message-input').value.trim();
-
-        displayUserMessage(message);
-        document.getElementById('message-input').value = '';
-        await sendMessage(message);
-    });
-
-const displayMessage = (containerClass, avatarClass, avatarIcon, message) => {
-    const messagesDiv = document.getElementById('messages');
+const getElementById = (id) => document.getElementById(id);
+const getValue = (element) => element.value.trim();
+const setValue = (element, value) => element.value = value;
+const createMessageContainer = (containerClass, avatarClass, avatarIcon, message) => {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('message-container', containerClass);
 
@@ -23,9 +15,21 @@ const displayMessage = (containerClass, avatarClass, avatarIcon, message) => {
 
     messageContainer.appendChild(avatar);
     messageContainer.appendChild(messageBubble);
-    messagesDiv.appendChild(messageContainer);
 
+    return messageContainer;
+};
+
+const appendMessageContainer = (messageContainer) => {
+    const messagesDiv = getElementById('messages');
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(messageContainer);
+    messagesDiv.appendChild(fragment);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+};
+
+const displayMessage = (containerClass, avatarClass, avatarIcon, message) => {
+    const messageContainer = createMessageContainer(containerClass, avatarClass, avatarIcon, message);
+    appendMessageContainer(messageContainer);
 };
 
 const displayUserMessage = (message) => {
@@ -38,19 +42,40 @@ const displayBotMessage = (message) => {
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-const sendMessage = async (message) => {
+const fetchChatAPI = async (message) => {
     try {
         const response = await fetch('/api/v1/chat', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({message})
+            body: JSON.stringify({message}),
         });
 
+        return response.json();
+    } catch (error) {
+        console.error('Erro ao enviar mensagem:', error);
+        throw error;
+    }
+};
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    const messageInput = getElementById('message-input');
+    const message = getValue(messageInput);
+    displayUserMessage(message);
+    setValue(messageInput, '');
+    await sendMessage(message);
+};
+
+const sendMessage = async (message) => {
+    try {
+        const response = await fetchChatAPI(message);
         await delay(1000);
-        displayBotMessage(await response.json());
+        displayBotMessage(response);
     } catch (error) {
         console.error('Erro ao enviar mensagem:', error);
     }
 };
+
+getElementById('chat-form').addEventListener('submit', handleSubmit);

@@ -1,7 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import customerRepository from '../repositories/classificationRepository';
-import chatBotRepository from "../repositories/chatBotRepository";
-import csvRepository from "../repositories/csvRepository";
+import chatBotRepository from "../services/chatbotService";
 
 async function getClassification(req: Request, res: Response, _next: NextFunction) {
     const classification = await customerRepository.getClassifications();
@@ -18,7 +17,6 @@ async function postClassification(req: Request, res: Response, _next: NextFuncti
 }
 
 async function chatBot(req: Request, res: Response, _next: NextFunction) {
-    csvRepository.addTrainingDataFromCSV();
     const reponseChat = await chatBotRepository.processMessage(req.body.message);
 
     if (reponseChat) {

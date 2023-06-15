@@ -1,5 +1,6 @@
 import utils from "../helpers/utils";
-import BayesClassifier from "bayes-classifier";
+import {BayesClassifier} from "natural";
+import csvRepository from "./csvService";
 
 
 const classifier = new BayesClassifier();
@@ -22,12 +23,15 @@ const unknownResponses = [
 ];
 
 function processMessage(message: string) {
+    csvRepository.addTrainingDataFromCSV(classifier);
     populaClassification();
     const preprocessedMessage = utils.preProcessMessage(message);
-    const classification = classifier.getClassifications(preprocessedMessage);
+    const classification = classifier.getClassifications(preprocessedMessage)[0];
 
-    if (classificationMap.has(classification.label)) {
-        return classificationMap.get(classification.label);
+    if (classification) {
+        if (classificationMap.has(classification.label)) {
+            return classificationMap.get(classification.label);
+        }
     }
     return (unknownResponses)[utils.radomNumber(unknownResponses.length)];
 }
